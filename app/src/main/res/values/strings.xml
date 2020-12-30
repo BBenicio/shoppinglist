@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">ShoppingList</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">Shopping Carts</string>
+    <string name="second_fragment_label">Shopping List</string>
+    <string name="default_cart_title">Shopping Cart</string>
+    <string name="cart_pending">Pending</string>
+    <string name="cart_complete">Complete</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+
+    <string name="default_cost">$ 0,00</string>
+    <string name="default_items">0 items</string>
+    <string name="default_item_name">Item</string>
+
+    <string name="item_deleted">Item deleted</string>
+    <string name="undo">Undo</string>
+    <string name="check_all">Check All</string>
+    <string name="uncheck_all">Uncheck All</string>
+
+    <plurals name="item">
+        <item quantity="one">%d item</item>
+        <item quantity="other">%d items</item>
+    </plurals>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="one">1</string>
+    <string name="max_cost">Max Cost</string>
+    <string name="dark_theme">Dark Theme</string>
+    <string name="duplicate">Duplicate</string>
+    <string name="search">Search</string>
+</resources>

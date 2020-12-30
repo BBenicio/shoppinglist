@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#673AB7</color>
+    <color name="colorPrimaryDark">#320b86</color>
+    <color name="colorAccent">#c51162</color>
+    <color name="colorOverSpent">#F50057</color>
+
+    <color name="darkBackground">#121212</color>
+    <color name="lightBackground">#ffffff</color>
+
+    <!-- Background color for light CardView. -->
+    <color name="cardLightBackground">#FFFAFAFA</color>
+    <!-- Background color for dark CardView. -->
+    <color name="cardDarkBackground">#FF202020</color>
+
+    <color name="btnLightBackground">#DEDEDE</color>
+    <color name="btnDarkBackground">#616161</color>
+
+    <!-- https://gist.github.com/jemshit/0e755f9a5669fe78d0e2 -->
+    <!-- Dark Text Color for Light Background -->
+    <color name="textDarkPrimary">#DE000000</color> <!--DE for %87 opacity-->
+    <color name="textDarkSecondary">#99000000</color> <!--99 for %60 opacity-->
+    <color name="textDarkDisabled">#61000000</color> <!--61 for %38 opacity-->
+
+    <!-- White Text Color for Dark Background -->
+    <color name="textLightPrimary">#FFFFFF</color> <!--%100 opacity-->
+    <color name="textLightSecondary">#B2FFFFFF</color> <!--B2 for %70 opacity-->
+    <color name="textLightDisabled">#80FFFFFF</color> <!--80 for %50 opacity-->
+</resources>

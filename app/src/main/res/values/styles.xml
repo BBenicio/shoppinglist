@@ -1,0 +1,94 @@
+<resources>
+
+    <attr name="cardStyle" format="reference" />
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+        <item name="android:textColor">@color/textDarkPrimary</item>
+        <item name="android:textColorPrimary">@color/textDarkPrimary</item>
+        <item name="android:textColorSecondary">@color/textDarkSecondary</item>
+        <item name="android:textColorPrimaryInverse">@color/textLightPrimary</item>
+        <item name="android:textColorSecondaryInverse">@color/textLightSecondary</item>
+
+        <item name="android:textColorHint">@color/textDarkDisabled</item>
+
+        <item name="android:windowBackground">@color/lightBackground</item>
+
+        <item name="cardStyle">@style/MyCardView</item>
+
+        <item name="android:buttonStyle">@style/MyButton</item>
+
+<!--        <item name="android:popupMenuStyle">@style/MyMenuItem</item>-->
+        <item name="popupTheme">@style/MyMenuItem</item>
+    </style>
+
+    <style name="AppTheme.Dark">
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
+
+        <item name="android:textColor">@color/textLightPrimary</item>
+        <item name="android:textColorPrimary">@color/textLightPrimary</item>
+        <item name="android:textColorSecondary">@color/textLightSecondary</item>
+        <item name="android:textColorPrimaryInverse">@color/textDarkPrimary</item>
+        <item name="android:textColorSecondaryInverse">@color/textDarkSecondary</item>
+
+        <item name="android:textColorHint">@color/textLightDisabled</item>
+
+        <item name="android:windowBackground">@color/darkBackground</item>
+
+        <item name="cardStyle">@style/MyCardView.Dark</item>
+
+        <item name="android:buttonStyle">@style/MyButton.Dark</item>
+
+
+        <item name="popupTheme">@style/MyMenuItem.Dark</item>
+    </style>
+
+    <style name="MyMenuItem" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:background">@color/lightBackground</item>
+    </style>
+
+    <style name="MyMenuItem.Dark">
+        <item name="android:background">@color/darkBackground</item>
+    </style>
+
+    <style name="MyButton" parent="Widget.AppCompat.Button">
+        <item name="android:textColor">@color/textDarkPrimary</item>
+        <item name="android:background">@color/btnLightBackground</item>
+    </style>
+
+    <style name="MyButton.Dark">
+        <item name="android:textColor">@color/textLightPrimary</item>
+        <item name="android:background">@color/btnDarkBackground</item>
+    </style>
+
+    <style name="MyCardView" parent="CardView">
+        <item name="cardBackgroundColor">@color/cardLightBackground</item>
+    </style>
+
+    <style name="MyCardView.Dark">
+        <item name="cardBackgroundColor">@color/cardDarkBackground</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+<!--    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />-->
+<!--    <style name="AppTheme.PopupOverlay.Dark" parent="ThemeOverlay.AppCompat.Dark" />-->
+
+    <style name="AppTheme.Launcher">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+    </style>
+
+</resources>

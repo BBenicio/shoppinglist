@@ -21,4 +21,6 @@
     <string name="check_all">Marcar Todos</string>
     <string name="uncheck_all">Desmarcar Todos</string>
     <string name="search">Buscar</string>
+    <string name="new_cart">Nova lista</string>
+    <string name="new_item">Novo item</string>
 </resources>

@@ -30,4 +30,6 @@
     <string name="dark_theme">Dark Theme</string>
     <string name="duplicate">Duplicate</string>
     <string name="search">Search</string>
+    <string name="new_cart">New cart</string>
+    <string name="new_item">New item</string>
 </resources>

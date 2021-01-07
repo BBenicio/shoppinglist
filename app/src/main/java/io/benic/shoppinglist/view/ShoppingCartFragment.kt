@@ -14,11 +14,10 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
-import io.benic.shoppinglist.MainActivity
 import io.benic.shoppinglist.R
 import io.benic.shoppinglist.model.ShoppingCart
-import io.benic.shoppinglist.utils.Shared
 import io.benic.shoppinglist.viewmodel.ShoppingCartViewModel
+import kotlinx.android.synthetic.main.fragment_shopping_cart.*
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -35,7 +34,7 @@ class ShoppingCartFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_first, container, false)
+        return inflater.inflate(R.layout.fragment_shopping_cart, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,7 +63,6 @@ class ShoppingCartFragment : Fragment() {
             }
         })
 
-        Shared.cart = null
         handler = Handler(requireActivity().mainLooper)
 
         cartsList = view.findViewById(R.id.carts_list)
@@ -89,10 +87,9 @@ class ShoppingCartFragment : Fragment() {
         val itemTouchHelper = ItemTouchHelper(swipeHelper)
         itemTouchHelper.attachToRecyclerView(cartsList)
 
-        (activity as MainActivity).setMenuItemsVisible(false)
-
-        Shared.current = 0
-        Shared.frag = this
+        fab.setOnClickListener {
+            addCart()
+        }
     }
 
     private fun createCartRecycleAdapter(carts: List<ShoppingCart>): ShoppingCartRecycleAdapter {
@@ -103,7 +100,10 @@ class ShoppingCartFragment : Fragment() {
         return ShoppingCartRecycleAdapter(mut,
             { c ->
                 val bundle = bundleOf("cartId" to c.id)
-                findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment, bundle)
+                findNavController().navigate(
+                    R.id.action_ShoppingCartFragment_to_ItemFragment,
+                    bundle
+                )
             },
             { c ->
                 Log.i(TAG, "creating cart ${c.name}")
@@ -114,8 +114,8 @@ class ShoppingCartFragment : Fragment() {
         )
     }
 
-    fun addCart() {
-        findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+    private fun addCart() {
+        findNavController().navigate(R.id.action_ShoppingCartFragment_to_ItemFragment)
     }
 
     companion object {

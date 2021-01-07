@@ -1,0 +1,21 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="io.benic.shoppinglist.MainActivity">
+    <item
+        android:id="@+id/app_bar_search"
+        android:icon="@drawable/ic_search_black_24dp"
+        android:title="@string/search"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/check_all"
+        android:orderInCategory="100"
+        android:title="@string/check_all"
+        android:visible="false"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/uncheck_all"
+        android:title="@string/uncheck_all"
+        android:visible="false" />
+</menu>

@@ -4,11 +4,10 @@ import android.os.Bundle
 import android.os.Handler
 import android.text.TextWatcher
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.EditText
 import android.widget.ProgressBar
+import android.widget.SearchView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
@@ -20,13 +19,12 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
-import io.benic.shoppinglist.MainActivity
 import io.benic.shoppinglist.R
 import io.benic.shoppinglist.model.Item
 import io.benic.shoppinglist.model.ShoppingCart
 import io.benic.shoppinglist.utils.CurrencyHelper
-import io.benic.shoppinglist.utils.Shared
 import io.benic.shoppinglist.viewmodel.ItemViewModel
+import kotlinx.android.synthetic.main.fragment_item.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -49,6 +47,11 @@ class ItemFragment : Fragment() {
     private lateinit var maxCost: EditText
     private lateinit var cartTitle: EditText
 
+    private lateinit var checkAll: MenuItem
+    private lateinit var uncheckAll: MenuItem
+    private lateinit var searchItem: MenuItem
+    private lateinit var search: SearchView
+
     private lateinit var handler: Handler
 
     private lateinit var itemListAdapter: ItemRecycleAdapter
@@ -58,6 +61,12 @@ class ItemFragment : Fragment() {
     private var unsavedChanges: Int = 0
     private var itemsInitialized: Boolean = false
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setHasOptionsMenu(true)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -65,7 +74,7 @@ class ItemFragment : Fragment() {
         handler = Handler(requireActivity().mainLooper)
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_second, container, false)
+        return inflater.inflate(R.layout.fragment_item, container, false)
     }
 
     private fun initializeItems() {
@@ -215,6 +224,10 @@ class ItemFragment : Fragment() {
         progressCard.setOnClickListener {
             findNavController().popBackStack()
         }
+
+        fab.setOnClickListener {
+            addItem()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -271,15 +284,41 @@ class ItemFragment : Fragment() {
         val itemTouchHelper = ItemTouchHelper(swipeHelper)
         itemTouchHelper.attachToRecyclerView(itemList)
 
-        (activity as MainActivity).setMenuItemsVisible(true)
-        (activity as MainActivity).setItemsChecked(cart.items.none { item -> !item.checked })
-        (activity as MainActivity).search.setOnQueryTextListener(itemList.adapter as ItemRecycleAdapter)
-
-        Shared.current = 1
-        Shared.frag = this
+        setItemsChecked(cart.items.none { item -> !item.checked })
     }
 
-    fun setItemsChecked(checked: Boolean) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_item, menu)
+
+        checkAll = menu.findItem(R.id.check_all)
+        uncheckAll = menu.findItem(R.id.uncheck_all)
+        searchItem = menu.findItem(R.id.app_bar_search)
+
+        search = searchItem.actionView as SearchView
+        search.setOnQueryTextListener(itemList.adapter as ItemRecycleAdapter)
+
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.check_all -> {
+                setItemsChecked(true)
+                true
+            }
+            R.id.uncheck_all -> {
+                setItemsChecked(false)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun setItemsChecked(checked: Boolean) {
+        if (this::checkAll.isInitialized) {
+            checkAll.isVisible = !checked
+            uncheckAll.isVisible = checked
+        }
         (itemList.adapter as ItemRecycleAdapter).setItemsChecked(checked)
     }
 
@@ -324,7 +363,7 @@ class ItemFragment : Fragment() {
                     )
                 }
 
-                (activity as MainActivity).setItemsChecked(checked.size == cart.items.size)
+                setItemsChecked(checked.size == cart.items.size)
 
                 itemsSelected.text =
                     resources.getQuantityString(R.plurals.item, checked.size).format(checked.size)
@@ -337,7 +376,7 @@ class ItemFragment : Fragment() {
         }
     }
 
-    fun addItem() {
+    private fun addItem() {
         Log.i(TAG, "add item to cart ${cart.id}")
 
         val item = Item(cartId = cart.id)

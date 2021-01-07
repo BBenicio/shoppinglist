@@ -1,4 +1,4 @@
-package io.benic.shoppinglist
+package io.benic.shoppinglist.view
 
 import android.graphics.Canvas
 import android.graphics.Color
@@ -11,10 +11,16 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.Runnable
+import io.benic.shoppinglist.R
 
 
-class SwipeHelper(private val mainLooperHandler: Handler, private val callback : (Boolean, Int)->Unit) : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.LEFT) {
+class SwipeHelper(
+    private val mainLooperHandler: Handler,
+    private val callback: (Boolean, Int) -> Unit
+) : ItemTouchHelper.SimpleCallback(
+    ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+    ItemTouchHelper.LEFT
+) {
 
     companion object {
         private const val TAG = "SwipeHelper"
@@ -22,9 +28,9 @@ class SwipeHelper(private val mainLooperHandler: Handler, private val callback :
     }
 
     private var itemAdapter: ItemRecycleAdapter? = null
-    private var cartAdapter: CartRecycleAdapter? = null
+    private var cartAdapter: ShoppingCartRecycleAdapter? = null
 
-    private val deleteBackground:Drawable = ColorDrawable(Color.RED)
+    private val deleteBackground: Drawable = ColorDrawable(Color.RED)
 
     private var pending: Runnable? = null
     private var isSwiping: Boolean = false
@@ -33,7 +39,7 @@ class SwipeHelper(private val mainLooperHandler: Handler, private val callback :
         itemAdapter = adapter
     }
 
-    fun setAdapter(adapter: CartRecycleAdapter) {
+    fun setAdapter(adapter: ShoppingCartRecycleAdapter) {
         cartAdapter = adapter
     }
 
@@ -52,7 +58,6 @@ class SwipeHelper(private val mainLooperHandler: Handler, private val callback :
     }
 
 
-
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         val i = viewHolder.adapterPosition
         Log.i(TAG, "swiped on item $i")
@@ -65,26 +70,29 @@ class SwipeHelper(private val mainLooperHandler: Handler, private val callback :
 
             setDefaultSwipeDirs(ItemTouchHelper.LEFT)
         }
-        mainLooperHandler.postDelayed(pending, UNDO_TIME)
+        mainLooperHandler.postDelayed(pending!!, UNDO_TIME)
 
-        Snackbar.make(viewHolder.itemView, R.string.item_deleted, Snackbar.LENGTH_INDEFINITE).setAction(R.string.undo) { _ ->
-            Log.i(TAG, "undoing")
+        Snackbar.make(viewHolder.itemView, R.string.item_deleted, Snackbar.LENGTH_INDEFINITE)
+            .setAction(
+                R.string.undo
+            ) {
+                Log.i(TAG, "undoing")
 
-            mainLooperHandler.removeCallbacks(pending)
-            pending = null
+                mainLooperHandler.removeCallbacks(pending!!)
+                pending = null
 
-            callback.invoke(false, i)
+                callback.invoke(false, i)
 
-            setDefaultSwipeDirs(ItemTouchHelper.LEFT)
-        }.setDuration(UNDO_TIME.toInt()).show()
+                setDefaultSwipeDirs(ItemTouchHelper.LEFT)
+            }.setDuration(UNDO_TIME.toInt()).show()
     }
 
     /**
-     * We're gonna setup another ItemDecorator that will draw the red background in the empty space while the items are animating to thier new positions
+     * We're gonna setup another ItemDecorator that will draw the red background in the empty space while the items are animating to their new positions
      * after an item is removed.
      * https://github.com/nemanja-kovacevic/recycler-view-swipe-to-delete
      */
-    public fun setUpAnimationDecoratorHelper(recyclerView: RecyclerView) {
+    fun setUpAnimationDecoratorHelper(recyclerView: RecyclerView) {
         recyclerView.addItemDecoration(object : ItemDecoration() {
             // we want to cache this and not allocate anything repeatedly in the onDraw method
             val background: Drawable = deleteBackground

@@ -1,18 +1,19 @@
 package io.benic.shoppinglist.model
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 
 @Dao
 interface ItemDao {
 
     @Query("select * from items order by position asc")
-    fun getAll() : List<Item>
+    fun getAll(): LiveData<List<Item>>
 
     @Query("select * from items where cartId = :cartId order by position asc")
-    fun getFromCart(cartId:Long) : List<Item>
+    fun getFromCart(cartId: Long): LiveData<List<Item>>
 
     @Insert
-    fun insert(vararg item: Item) : List<Long>
+    fun insert(vararg item: Item): List<Long>
 
     @Delete
     fun delete(item: Item)

@@ -3,17 +3,21 @@ package io.benic.shoppinglist
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.SearchView
-
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
+import io.benic.shoppinglist.utils.Shared
+import io.benic.shoppinglist.view.ItemFragment
+import io.benic.shoppinglist.view.ShoppingCartFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private var dark:Boolean = false
+    private var dark: Boolean = false
     private lateinit var themeSwitch: MenuItem
     private lateinit var checkAll: MenuItem
     private lateinit var uncheckAll: MenuItem
@@ -31,16 +35,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        Shared.startDB(this)
+//        Shared.startDB(this)
 
         fab.setOnClickListener { view ->
             if (Shared.frag != null) {
                 when (Shared.current) {
                     0 -> {
-                        (Shared.frag as FirstFragment).addCart()
+                        (Shared.frag as ShoppingCartFragment).addCart()
                     }
                     1 -> {
-                        (Shared.frag as SecondFragment).addItem()
+                        (Shared.frag as ItemFragment).addItem()
                     }
                 }
             } else {
@@ -51,7 +55,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        Shared.database.close()
+//        Shared.database.close()
         Log.i(TAG, "onDestroy")
         super.onDestroy()
     }
@@ -92,11 +96,11 @@ class MainActivity : AppCompatActivity() {
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.check_all -> {
-                (Shared.frag as SecondFragment).setItemsChecked(true)
+                (Shared.frag as ItemFragment).setItemsChecked(true)
                 true
             }
             R.id.uncheck_all -> {
-                (Shared.frag as SecondFragment).setItemsChecked(false)
+                (Shared.frag as ItemFragment).setItemsChecked(false)
                 true
             }
             R.id.theme_switch -> {
@@ -106,7 +110,7 @@ class MainActivity : AppCompatActivity() {
                 themeSwitch.isChecked = dark
 //                Preferences.userRoot().putBoolean("dark", dark)
                 val pref = getPreferences(Context.MODE_PRIVATE)
-                with (pref.edit()) {
+                with(pref.edit()) {
                     putBoolean("dark", dark)
                     commit()
                 }

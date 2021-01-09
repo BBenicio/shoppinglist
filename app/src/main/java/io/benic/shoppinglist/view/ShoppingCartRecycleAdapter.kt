@@ -14,8 +14,7 @@ import io.benic.shoppinglist.utils.CurrencyHelper
 
 class ShoppingCartRecycleAdapter(
     val data: MutableList<ShoppingCart>,
-    private val editListener: (ShoppingCart) -> Unit,
-    private val duplicateListener: (ShoppingCart) -> Unit
+    private val listener: ShoppingCartRecycleListener
 ) : RecyclerView.Adapter<ShoppingCartRecycleAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -49,10 +48,10 @@ class ShoppingCartRecycleAdapter(
     override fun getItemCount(): Int = data.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.itemView.setOnClickListener { editListener(data[position]) }
+        holder.itemView.setOnClickListener { listener.onEdit(data[position]) }
 
         holder.itemView.findViewById<Button>(R.id.duplicateButton).setOnClickListener {
-            duplicateListener(data[position])
+            listener.onDuplicate(data[position])
         }
 
         holder.cartTitle.text = data[position].name
@@ -84,7 +83,7 @@ class ShoppingCartRecycleAdapter(
     }
 
     fun removeCartAt(position: Int) {
-        Log.i("CartAdapter", "add cart at $position")
+        Log.i("CartAdapter", "remove cart at $position")
         data.removeAt(position)
         notifyItemRemoved(position)
     }

@@ -4,19 +4,21 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
-import android.os.Handler
 import android.util.Log
 import android.view.View
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.google.android.material.snackbar.Snackbar
 import io.benic.shoppinglist.R
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class SwipeHelper(
-    private val mainLooperHandler: Handler,
-    private val callback: (Boolean, Int) -> Unit
+    private val lifecycleCoroutineScope: LifecycleCoroutineScope,
+    private val callback: (remove: Boolean, position: Int) -> Unit
 ) : ItemTouchHelper.SimpleCallback(
     ItemTouchHelper.UP or ItemTouchHelper.DOWN,
     ItemTouchHelper.LEFT
@@ -32,7 +34,6 @@ class SwipeHelper(
 
     private val deleteBackground: Drawable = ColorDrawable(Color.RED)
 
-    private var pending: Runnable? = null
     private var isSwiping: Boolean = false
 
     fun setAdapter(adapter: ItemRecycleAdapter) {
@@ -64,13 +65,14 @@ class SwipeHelper(
 
         setDefaultSwipeDirs(0)
 
-        pending = Runnable {
-            callback.invoke(true, i)
-            pending = null
-
-            setDefaultSwipeDirs(ItemTouchHelper.LEFT)
+        var undone = false
+        lifecycleCoroutineScope.launch {
+            delay(UNDO_TIME)
+            if (!undone) {
+                callback(true, i)
+                setDefaultSwipeDirs(ItemTouchHelper.LEFT)
+            }
         }
-        mainLooperHandler.postDelayed(pending!!, UNDO_TIME)
 
         Snackbar.make(viewHolder.itemView, R.string.item_deleted, Snackbar.LENGTH_INDEFINITE)
             .setAction(
@@ -78,11 +80,9 @@ class SwipeHelper(
             ) {
                 Log.i(TAG, "undoing")
 
-                mainLooperHandler.removeCallbacks(pending!!)
-                pending = null
+                undone = true
 
-                callback.invoke(false, i)
-
+                callback(false, i)
                 setDefaultSwipeDirs(ItemTouchHelper.LEFT)
             }.setDuration(UNDO_TIME.toInt()).show()
     }

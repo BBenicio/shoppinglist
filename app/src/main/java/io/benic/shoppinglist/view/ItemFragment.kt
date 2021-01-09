@@ -244,7 +244,7 @@ class ItemFragment : Fragment() {
             }
         }
 
-        val swipeHelper = SwipeHelper(handler) { remove, i ->
+        val swipeHelper = SwipeHelper(lifecycleScope) { remove, i ->
             val item = itemListAdapter.getItem(i)
 
             if (remove) {
@@ -253,9 +253,9 @@ class ItemFragment : Fragment() {
                 cart.items.remove(item)
                 updateProgress()
 
-                (itemList.adapter as ItemRecycleAdapter).notifyItemRemoved(i)
+                itemListAdapter.notifyItemRemoved(i)
             } else {
-                (itemList.adapter as ItemRecycleAdapter).notifyItemChanged(i)
+                itemListAdapter.notifyItemChanged(i)
             }
         }
         swipeHelper.setAdapter(itemListAdapter)

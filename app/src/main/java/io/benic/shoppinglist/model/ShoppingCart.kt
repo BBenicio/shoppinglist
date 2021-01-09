@@ -13,7 +13,13 @@ data class ShoppingCart(
     var cost: Int = 0,
     var description: String = ""
 ) {
-    constructor(cart: ShoppingCart) : this(cart.id, cart.name.substring(0), cart.maxCost) {
+    constructor(cart: ShoppingCart) : this(
+        id = cart.id,
+        name = cart.name.substring(0),
+        maxCost = cart.maxCost,
+        cost = cart.cost,
+        description = cart.description.substring(0)
+    ) {
         for (it in cart.items) {
             items.add(Item(it))
         }

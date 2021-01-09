@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -56,7 +57,9 @@ class ShoppingCartFragment : Fragment() {
                 carts.isEmpty() -> {
                 }
                 else -> {
-                    adapter.changeItemAt(adapter.selected, carts[adapter.selected])
+                    Log.i(TAG, "carts change requires dataset change")
+                    adapter.data.clear()
+                    adapter.addData(carts)
                 }
             }
         })
@@ -70,13 +73,15 @@ class ShoppingCartFragment : Fragment() {
         // elements are laid out.
         cartsList.layoutManager = LinearLayoutManager(activity)
 
-        val swipeHelper = SwipeHelper(handler) { remove, i ->
+        val swipeHelper = SwipeHelper(lifecycleScope) { remove, i ->
             val adapter = (cartsList.adapter as ShoppingCartRecycleAdapter)
             val cart = adapter.data[i]
             adapter.selected = i
 
             if (remove) {
                 viewModel.remove(cart)
+            } else {
+                adapter.notifyItemChanged(i)
             }
         }
 
@@ -94,21 +99,31 @@ class ShoppingCartFragment : Fragment() {
         val mut = mutableListOf<ShoppingCart>().apply {
             addAll(carts)
         }
-        return ShoppingCartRecycleAdapter(mut,
-            { c ->
-                val bundle = bundleOf("cartId" to c.id)
+        return ShoppingCartRecycleAdapter(mut, object : ShoppingCartRecycleListener {
+            override fun onEdit(cart: ShoppingCart) {
+                val bundle = bundleOf("cartId" to cart.id)
                 findNavController().navigate(
                     R.id.action_ShoppingCartFragment_to_ItemFragment,
                     bundle
                 )
-            },
-            { c ->
-                Log.i(TAG, "creating cart ${c.name}")
-
-                c.id = 0
-                viewModel.add(c)
             }
-        )
+
+            override fun onDuplicate(cart: ShoppingCart) {
+                Log.i(TAG, "creating cart ${cart.name}")
+                val c = ShoppingCart(cart)
+                c.id = 0
+
+                viewModel.add(c).observe(viewLifecycleOwner, { id ->
+                    c.id = id
+                    val itemsFromCart = viewModel.getItemsFromCart(cart)
+                    itemsFromCart.observe(viewLifecycleOwner, { items ->
+                        Log.i(TAG, "adding ${items.size} items to cart ${c.name}")
+                        itemsFromCart.removeObservers(viewLifecycleOwner)
+                        viewModel.addItemsToCart(c, items)
+                    })
+                })
+            }
+        })
     }
 
     private fun addCart() {

@@ -18,22 +18,13 @@ class ShoppingCartRecycleAdapter(
 ) : RecyclerView.Adapter<ShoppingCartRecycleAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val cartTitle: TextView
-        val shortList: Array<TextView>
-        val totalCost: TextView
-
-        init {
-            cartTitle = view.findViewById(R.id.cartTitle)
-            shortList = Array(3) { i ->
-                when (i) {
-                    0 -> view.findViewById(R.id.item1)
-                    1 -> view.findViewById(R.id.item2)
-                    2 -> view.findViewById(R.id.item3)
-                    else -> view.findViewById(R.id.item1)
-                }
-            }
-            totalCost = view.findViewById(R.id.totalCost)
-        }
+        val cartTitle: TextView = view.findViewById(R.id.cartTitle)
+        val shortList: Array<TextView> = arrayOf(
+            view.findViewById(R.id.item1),
+            view.findViewById(R.id.item2),
+            view.findViewById(R.id.item3)
+        )
+        val totalCost: TextView = view.findViewById(R.id.totalCost)
     }
 
     var selected: Int = 0
@@ -77,25 +68,24 @@ class ShoppingCartRecycleAdapter(
     }
 
     fun addCart(cart: ShoppingCart) {
-        Log.i("CartAdapter", "add cart ${cart.name}")
+        Log.i(TAG, "add cart ${cart.name}")
         data.add(cart)
         notifyItemInserted(data.size)
     }
 
     fun removeCartAt(position: Int) {
-        Log.i("CartAdapter", "remove cart at $position")
+        Log.i(TAG, "remove cart at $position")
         data.removeAt(position)
         notifyItemRemoved(position)
     }
 
-    fun changeItemAt(position: Int, cart: ShoppingCart) {
-        Log.i("CartAdapter", "change cart at $position; ${cart.name}")
-        data[position] = cart
-        notifyItemChanged(position)
-    }
-
     fun addData(carts: List<ShoppingCart>) {
+        Log.i(TAG, "add ${carts.size} carts")
         data.addAll(carts)
         notifyDataSetChanged()
+    }
+
+    companion object {
+        private const val TAG = "ShoppingCartAdapter"
     }
 }

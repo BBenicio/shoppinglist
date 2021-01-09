@@ -54,8 +54,6 @@ class ShoppingCartFragment : Fragment() {
                 carts.size < adapter.itemCount -> {
                     adapter.removeCartAt(adapter.selected)
                 }
-                carts.isEmpty() -> {
-                }
                 else -> {
                     Log.i(TAG, "carts change requires dataset change")
                     adapter.data.clear()
@@ -68,9 +66,6 @@ class ShoppingCartFragment : Fragment() {
 
         cartsList.adapter = createCartRecycleAdapter(listOf())
 
-        // LinearLayoutManager is used here, this will layout the elements in a similar fashion
-        // to the way ListView would layout elements. The RecyclerView.LayoutManager defines how
-        // elements are laid out.
         cartsList.layoutManager = LinearLayoutManager(activity)
 
         val swipeHelper = SwipeHelper(lifecycleScope) { remove, i ->
@@ -131,6 +126,6 @@ class ShoppingCartFragment : Fragment() {
     }
 
     companion object {
-        private const val TAG = "FirstFragment"
+        private const val TAG = "ShoppingCartFragment"
     }
 }

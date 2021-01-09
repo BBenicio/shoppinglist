@@ -402,7 +402,7 @@ class ItemFragment : Fragment() {
     }
 
     companion object {
-        private const val TAG = "SecondFragment"
+        private const val TAG = "ItemFragment"
         private const val MAX_UNSAVED_CHANGES = 0
     }
 }

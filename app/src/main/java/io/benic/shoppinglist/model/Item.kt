@@ -35,7 +35,13 @@ data class Item(
 
     override fun equals(other: Any?): Boolean {
         if (other is Item) {
-            return id == other.id && cartId == other.cartId && name == other.name && price == other.price && quantity == other.quantity && checked == other.checked && position == other.position
+            return id == other.id &&
+                    cartId == other.cartId &&
+                    name == other.name &&
+                    price == other.price &&
+                    quantity == other.quantity &&
+                    checked == other.checked &&
+                    position == other.position
         }
 
         return false

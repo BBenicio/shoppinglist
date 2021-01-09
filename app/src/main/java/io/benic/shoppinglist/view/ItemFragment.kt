@@ -60,6 +60,7 @@ class ItemFragment : Fragment() {
 
     private var unsavedChanges: Int = 0
     private var itemsInitialized: Boolean = false
+    private var isInitializing: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,20 +97,22 @@ class ItemFragment : Fragment() {
         itemCount.text =
             resources.getQuantityString(R.plurals.item, cart.items.size).format(cart.items.size)
 
-        Log.d(TAG, "init items ${cart.items.size}")
         itemListAdapter.changeData(cart.items)
+
+        isInitializing = false
+        updateProgress()
     }
 
     private fun initializeCart() {
         if (!itemsInitialized) {
             itemsInitialized = true
             viewModel.fetchItems(cart.id).observe(viewLifecycleOwner, { items ->
-                if (items.containsAll(cart.items) && cart.items.containsAll(items)) {
-                    Log.i(TAG, "items loaded are the same as the ones in memory, skip.")
-                } else {
-                    cart.items.clear()
+                if (cart.items.isEmpty()) {
+                    Log.i(TAG, "showing items")
                     cart.items.addAll(items)
                     initializeItems()
+                } else {
+                    Log.i(TAG, "won't reload items")
                 }
             })
         }
@@ -119,7 +122,7 @@ class ItemFragment : Fragment() {
         }
 
         cartTitle.setText(cart.name)
-        totalCost.text = CurrencyHelper.getString(cart.cost)
+        totalValue.text = CurrencyHelper.getString(cart.cost)
     }
 
     private fun createAdapter() {
@@ -166,6 +169,7 @@ class ItemFragment : Fragment() {
             override fun onChecked(position: Int, checked: Boolean) {
                 val item = itemListAdapter.getItem(position)
                 item.checked = checked
+
                 updateProgress()
             }
 
@@ -236,10 +240,11 @@ class ItemFragment : Fragment() {
         initView(view)
         initListeners()
 
-        val cartId = arguments?.getLong("cartId")!!
+        val cartId = arguments?.getLong("cartId") ?: 0L
 
         if (cartId >= 0) {
             viewModel.fetchCart(cartId).observe(viewLifecycleOwner, { cart ->
+                Log.i(TAG, "loaded cart ${cart.name}")
                 this.cart = cart
                 viewModel.cart.removeObservers(viewLifecycleOwner)
                 initializeCart()
@@ -249,7 +254,6 @@ class ItemFragment : Fragment() {
             cart = ShoppingCart()
             viewModel.createCart(cart).observe(viewLifecycleOwner, { id ->
                 cart.id = id
-                Log.d(TAG, "cart created with id ${cart.id}")
                 initializeCart()
             })
         }
@@ -304,25 +308,37 @@ class ItemFragment : Fragment() {
         return when (item.itemId) {
             R.id.check_all -> {
                 setItemsChecked(true)
+                setShowCheckAllActionInMenu(false)
                 true
             }
             R.id.uncheck_all -> {
                 setItemsChecked(false)
+                setShowCheckAllActionInMenu(true)
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    private fun setItemsChecked(checked: Boolean) {
+    private fun setShowCheckAllActionInMenu(showChecked: Boolean) {
         if (this::checkAll.isInitialized) {
-            checkAll.isVisible = !checked
-            uncheckAll.isVisible = checked
+            checkAll.isVisible = showChecked
+            uncheckAll.isVisible = !showChecked
         }
+    }
+
+    private fun setItemsChecked(checked: Boolean) {
         (itemList.adapter as ItemRecycleAdapter).setItemsChecked(checked)
     }
 
     private fun updateProgress() {
+        Log.d(TAG, "updateProgress()")
+
+        if (isInitializing) {
+            Log.i(TAG, "still initializing so won't update progress")
+            return
+        }
+
         lifecycleScope.launch(Dispatchers.IO) {
             val checked = cart.items.filter { item -> item.checked }
 
@@ -363,7 +379,7 @@ class ItemFragment : Fragment() {
                     )
                 }
 
-                setItemsChecked(checked.size == cart.items.size)
+                setShowCheckAllActionInMenu(checked.size < cart.items.size)
 
                 itemsSelected.text =
                     resources.getQuantityString(R.plurals.item, checked.size).format(checked.size)
@@ -395,6 +411,7 @@ class ItemFragment : Fragment() {
     }
 
     private fun save() {
+        Log.d(TAG, "save ${cart.name} (${cart.items.size} items)")
         unsavedChanges = 0
         viewModel.updateCart(cart)
         for (item in cart.items) {
@@ -410,7 +427,7 @@ class ItemFragment : Fragment() {
 
     companion object {
         private const val TAG = "SecondFragment"
-        private const val MAX_UNSAVED_CHANGES = 1
+        private const val MAX_UNSAVED_CHANGES = 0
     }
 }
 

@@ -18,7 +18,7 @@ class ItemRecycleAdapter(
     private val listener: ItemRecycleListener
 ) : RecyclerView.Adapter<ItemRecycleAdapter.ViewHolder>(), SearchView.OnQueryTextListener {
 
-    private var filtered: List<Item> = data
+    private var filtered: List<Item> = listOf()
     private var filterText: String = ""
 
     class ViewHolder(
@@ -26,17 +26,14 @@ class ItemRecycleAdapter(
         listener: ItemRecycleListener
     ) : RecyclerView.ViewHolder(view) {
 
-        val quantity: EditText
-        val name: EditText
-        val price: EditText
-        val checkBox: CheckBox
+        val quantity: EditText = view.findViewById(R.id.quantity_edit)
+        val name: EditText = view.findViewById(R.id.item_name_edit)
+        val price: EditText = view.findViewById(R.id.item_price_edit)
+        val checkBox: CheckBox = view.findViewById(R.id.item_check)
+
+        var binding: Boolean = false
 
         init {
-            quantity = view.findViewById(R.id.quantity_edit)
-            name = view.findViewById(R.id.item_name_edit)
-            price = view.findViewById(R.id.item_price_edit)
-            checkBox = view.findViewById(R.id.item_check)
-
             quantity.addTextChangedListener { s, _ ->
                 listener.onQuantityChanged(
                     adapterPosition,
@@ -45,12 +42,14 @@ class ItemRecycleAdapter(
             }
             name.addTextChangedListener { s, _ -> listener.onNameChanged(adapterPosition, s) }
             price.addTextChangedListener { s, t ->
-                listener.onPriceChanged(
-                    adapterPosition,
-                    s,
-                    t,
-                    price
-                )
+                if (!binding) {
+                    listener.onPriceChanged(
+                        adapterPosition,
+                        s,
+                        t,
+                        price
+                    )
+                }
             }
             checkBox.setOnCheckedChangeListener { _, b -> listener.onChecked(adapterPosition, b) }
         }
@@ -66,13 +65,17 @@ class ItemRecycleAdapter(
     override fun getItemCount(): Int = if (isFiltered()) filtered.size else data.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        Log.d(TAG, "onBindViewHolder $position")
         val ds = if (isFiltered()) filtered else data
+        holder.binding = true
 
         holder.name.setText(ds[position].name)
         holder.quantity.setText(ds[position].quantity.toString())
         holder.checkBox.isChecked = ds[position].checked
 
         holder.price.setText(CurrencyHelper.getString(ds[position].price))
+
+        holder.binding = false
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {

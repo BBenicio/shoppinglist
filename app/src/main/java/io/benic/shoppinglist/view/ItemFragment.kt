@@ -6,10 +6,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.*
 import android.widget.EditText
-import android.widget.ProgressBar
 import android.widget.SearchView
-import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -17,7 +14,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import io.benic.shoppinglist.R
 import io.benic.shoppinglist.model.Item
@@ -37,15 +33,6 @@ class ItemFragment : Fragment() {
 
     private var cart: ShoppingCart = ShoppingCart()
 
-    private lateinit var itemList: RecyclerView
-    private lateinit var itemCount: TextView
-    private lateinit var totalCost: TextView
-    private lateinit var itemsSelected: TextView
-    private lateinit var progressBar: ProgressBar
-    private lateinit var progressCard: CardView
-    private lateinit var totalValue: TextView
-    private lateinit var maxCost: EditText
-    private lateinit var cartTitle: EditText
 
     private lateinit var checkAll: MenuItem
     private lateinit var uncheckAll: MenuItem
@@ -94,7 +81,7 @@ class ItemFragment : Fragment() {
             }
         }
 
-        itemCount.text =
+        totalItems.text =
             resources.getQuantityString(R.plurals.item, cart.items.size).format(cart.items.size)
 
         itemListAdapter.changeData(cart.items)
@@ -118,10 +105,10 @@ class ItemFragment : Fragment() {
         }
 
         if (cart.maxCost > 0) {
-            maxCost.setText(CurrencyHelper.getString(cart.maxCost))
+            maximumCost.setText(CurrencyHelper.getString(cart.maxCost))
         }
 
-        cartTitle.setText(cart.name)
+        cartTitleEdit.setText(cart.name)
         totalValue.text = CurrencyHelper.getString(cart.cost)
     }
 
@@ -181,45 +168,34 @@ class ItemFragment : Fragment() {
         itemList.adapter = itemListAdapter
     }
 
-    private fun initView(view: View) {
-        itemList = view.findViewById(R.id.item_list)
-
+    private fun initView() {
         itemList.layoutManager = LinearLayoutManager(requireContext())
-
-        totalValue = view.findViewById(R.id.total_value)
-        progressBar = view.findViewById(R.id.progress_bar)
-        progressCard = view.findViewById(R.id.progress_card)
-        itemsSelected = view.findViewById(R.id.items_selected)
-        totalCost = view.findViewById(R.id.total_cost)
-        maxCost = view.findViewById(R.id.maximum_cost)
-        cartTitle = view.findViewById(R.id.cart_title_edit)
-        itemCount = view.findViewById(R.id.total_items)
 
         createAdapter()
     }
 
     private fun initListeners() {
-        maxCost.addTextChangedListener { t, w ->
+        maximumCost.addTextChangedListener { t, w ->
             val cost = CurrencyHelper.getValue(t)
 
-            maxCost.removeTextChangedListener(w)
+            maximumCost.removeTextChangedListener(w)
 
             cart.maxCost = cost
             if (cost == 0) {
-                maxCost.setText("")
+                maximumCost.setText("")
                 updateProgress()
             } else {
                 val formatted = CurrencyHelper.getString(cart.maxCost)
-                maxCost.setText(formatted)
-                maxCost.setSelection(formatted.length)
+                maximumCost.setText(formatted)
+                maximumCost.setSelection(formatted.length)
 
                 updateProgress()
             }
 
-            maxCost.addTextChangedListener(w)
+            maximumCost.addTextChangedListener(w)
         }
 
-        cartTitle.addTextChangedListener { t, _ ->
+        cartTitleEdit.addTextChangedListener { t, _ ->
             if (cart.name != t) {
                 cart.name = t
             }
@@ -237,7 +213,7 @@ class ItemFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initView(view)
+        initView()
         initListeners()
 
         val cartId = arguments?.getLong("cartId") ?: 0L
@@ -401,7 +377,7 @@ class ItemFragment : Fragment() {
 
         viewModel.addItem(item).observe(viewLifecycleOwner, { id -> item.id = id })
 
-        itemCount.text =
+        totalItems.text =
             resources.getQuantityString(R.plurals.item, cart.items.size, cart.items.size)
 
         updateProgress()

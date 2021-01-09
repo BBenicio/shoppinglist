@@ -6,11 +6,11 @@ import android.widget.EditText
 
 fun EditText.addTextChangedListener(afterTextChanged: (String, TextWatcher) -> Unit) {
     this.addTextChangedListener(object : TextWatcher {
-        override fun afterTextChanged(p0: Editable?) {
-            afterTextChanged(p0.toString(), this)
+        override fun afterTextChanged(s: Editable?) {
+            afterTextChanged(s.toString(), this)
         }
 
-        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
     })
 }

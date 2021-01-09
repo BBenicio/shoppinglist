@@ -24,7 +24,7 @@ class ShoppingCartRecycleAdapter(
         val totalCost: TextView
 
         init {
-            cartTitle = view.findViewById(R.id.cart_title)
+            cartTitle = view.findViewById(R.id.cartTitle)
             shortList = Array(3) { i ->
                 when (i) {
                     0 -> view.findViewById(R.id.item1)
@@ -33,7 +33,7 @@ class ShoppingCartRecycleAdapter(
                     else -> view.findViewById(R.id.item1)
                 }
             }
-            totalCost = view.findViewById(R.id.total_cost)
+            totalCost = view.findViewById(R.id.totalCost)
         }
     }
 
@@ -51,7 +51,7 @@ class ShoppingCartRecycleAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.itemView.setOnClickListener { editListener(data[position]) }
 
-        holder.itemView.findViewById<Button>(R.id.duplicate_button).setOnClickListener {
+        holder.itemView.findViewById<Button>(R.id.duplicateButton).setOnClickListener {
             duplicateListener(data[position])
         }
 

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/item_layout"
+    android:id="@+id/itemLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="8dp">
 
   <EditText
-      android:id="@+id/quantity_edit"
+      android:id="@+id/itemQuantityEdit"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:ems="2"
@@ -19,30 +19,30 @@
       android:importantForAutofill="no" />
 
   <EditText
-      android:id="@+id/item_name_edit"
+      android:id="@+id/itemNameEdit"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:ems="10"
       android:hint="@string/default_item_name"
       android:inputType="textPersonName"
-      app:layout_constraintEnd_toStartOf="@+id/item_price_edit"
-      app:layout_constraintStart_toEndOf="@+id/quantity_edit"
+      app:layout_constraintEnd_toStartOf="@+id/itemPriceEdit"
+      app:layout_constraintStart_toEndOf="@+id/itemQuantityEdit"
       app:layout_constraintTop_toTopOf="parent"
       android:importantForAutofill="no" />
 
   <EditText
-      android:id="@+id/item_price_edit"
+      android:id="@+id/itemPriceEdit"
       android:layout_width="90dp"
       android:layout_height="wrap_content"
       android:ems="10"
       android:hint="@string/default_cost"
       android:inputType="number"
-      app:layout_constraintEnd_toStartOf="@+id/item_check"
+      app:layout_constraintEnd_toStartOf="@+id/itemCheck"
       app:layout_constraintTop_toTopOf="parent"
       android:importantForAutofill="no" />
 
   <CheckBox
-      android:id="@+id/item_check"
+      android:id="@+id/itemCheck"
       android:layout_width="wrap_content"
       android:layout_height="0dp"
       app:layout_constraintBottom_toBottomOf="parent"

@@ -8,7 +8,7 @@
     tools:context=".view.ShoppingCartFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/carts_list"
+        android:id="@+id/cartsList"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layoutAnimation="@anim/list_layout_animation"

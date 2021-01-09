@@ -8,7 +8,7 @@
     tools:context=".view.ItemFragment">
 
     <EditText
-        android:id="@+id/cart_title_edit"
+        android:id="@+id/cartTitleEdit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -17,12 +17,12 @@
         android:hint="@string/default_cart_title"
         android:importantForAutofill="no"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toStartOf="@+id/maximum_cost"
+        app:layout_constraintEnd_toStartOf="@+id/maximumCost"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/total_value"
+        android:id="@+id/totalValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
@@ -30,22 +30,22 @@
         android:layout_marginBottom="4dp"
         android:text="@string/default_cost"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/item_list"
+        app:layout_constraintBottom_toTopOf="@+id/itemList"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cart_title_edit" />
+        app:layout_constraintTop_toBottomOf="@+id/cartTitleEdit" />
 
     <TextView
-        android:id="@+id/total_items"
+        android:id="@+id/totalItems"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/default_items"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cart_title_edit" />
+        app:layout_constraintTop_toBottomOf="@+id/cartTitleEdit" />
 
     <EditText
-        android:id="@+id/maximum_cost"
+        android:id="@+id/maximumCost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -55,26 +55,26 @@
         android:hint="@string/max_cost"
         android:importantForAutofill="no"
         android:inputType="number"
-        app:layout_constraintBottom_toTopOf="@+id/total_items"
+        app:layout_constraintBottom_toTopOf="@+id/totalItems"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/item_list"
+        android:id="@+id/itemList"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layoutAnimation="@anim/list_layout_animation"
         android:paddingTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/progress_card"
+        app:layout_constraintBottom_toTopOf="@+id/progressCard"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/total_value"
+        app:layout_constraintTop_toBottomOf="@+id/totalValue"
         tools:listitem="@layout/recycler_view_list_item" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/progress_card"
+        android:id="@+id/progressCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -93,7 +93,7 @@
             android:animateLayoutChanges="true">
 
             <ProgressBar
-                android:id="@+id/progress_bar"
+                android:id="@+id/progressBar"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -107,7 +107,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/total_cost"
+                android:id="@+id/totalCost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/default_cost"
@@ -118,15 +118,15 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/items_selected"
+                android:id="@+id/itemsSelected"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/default_items"
                 android:textColor="@color/textLightPrimary"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/total_cost"
-                app:layout_constraintStart_toStartOf="@+id/total_cost"
-                app:layout_constraintTop_toBottomOf="@+id/total_cost" />
+                app:layout_constraintEnd_toEndOf="@+id/totalCost"
+                app:layout_constraintStart_toStartOf="@+id/totalCost"
+                app:layout_constraintTop_toBottomOf="@+id/totalCost" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

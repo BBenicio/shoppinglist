@@ -12,7 +12,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import io.benic.shoppinglist.R
 import io.benic.shoppinglist.model.ShoppingCart
@@ -27,7 +26,6 @@ class ShoppingCartFragment : Fragment() {
     private val viewModel: ShoppingCartViewModel by viewModels()
 
     private lateinit var handler: Handler
-    private lateinit var cartsList: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,7 +63,6 @@ class ShoppingCartFragment : Fragment() {
 
         handler = Handler(requireActivity().mainLooper)
 
-        cartsList = view.findViewById(R.id.carts_list)
         cartsList.adapter = createCartRecycleAdapter(listOf())
 
         // LinearLayoutManager is used here, this will layout the elements in a similar fashion

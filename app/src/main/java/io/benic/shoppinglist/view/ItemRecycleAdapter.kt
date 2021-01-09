@@ -26,10 +26,10 @@ class ItemRecycleAdapter(
         listener: ItemRecycleListener
     ) : RecyclerView.ViewHolder(view) {
 
-        val quantity: EditText = view.findViewById(R.id.quantity_edit)
-        val name: EditText = view.findViewById(R.id.item_name_edit)
-        val price: EditText = view.findViewById(R.id.item_price_edit)
-        val checkBox: CheckBox = view.findViewById(R.id.item_check)
+        val quantity: EditText = view.findViewById(R.id.itemQuantityEdit)
+        val name: EditText = view.findViewById(R.id.itemNameEdit)
+        val price: EditText = view.findViewById(R.id.itemPriceEdit)
+        val checkBox: CheckBox = view.findViewById(R.id.itemCheck)
 
         var binding: Boolean = false
 

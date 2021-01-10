@@ -3,21 +3,21 @@ package io.benic.shoppinglist.repository
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth.assertThat
-import getOrAwaitValue
 import io.benic.shoppinglist.model.AppDatabase
 import io.benic.shoppinglist.model.Item
 import io.benic.shoppinglist.model.ShoppingCart
+import io.benic.shoppinglist.testing.getOrAwaitValue
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 
-@RunWith(AndroidJUnit4::class)
-@SmallTest
+@RunWith(RobolectricTestRunner::class)
+@Config(maxSdk = 28)
 class ItemRepositoryTest {
 
     @get:Rule

@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Lista de Compras</string>
-    <string name="action_settings">Configurações</string>
     <string name="first_fragment_label">Carrinhos de Compra</string>
     <string name="second_fragment_label">Lista de Compras</string>
     <string name="default_cart_title">Carrinho de Compra</string>
-    <string name="cart_pending">Pendente</string>
-    <string name="cart_complete">Completo</string>
     <string name="delete">Excluir</string>
-    <string name="edit">Editar</string>
     <string name="default_items">0 itens</string>
     <string name="default_cost">R$ 0,00</string>
     <string name="default_item_name">Item</string>

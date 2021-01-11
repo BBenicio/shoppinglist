@@ -20,9 +20,7 @@ data class ShoppingCart(
         cost = cart.cost,
         description = cart.description.substring(0)
     ) {
-        for (it in cart.items) {
-            items.add(Item(it))
-        }
+        items.addAll(cart.items)
     }
 
 }

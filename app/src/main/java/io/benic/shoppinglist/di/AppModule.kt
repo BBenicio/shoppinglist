@@ -5,7 +5,7 @@ import androidx.room.Room
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.components.SingletonComponent
 import io.benic.shoppinglist.model.AppDatabase
 import io.benic.shoppinglist.model.ItemDao
 import io.benic.shoppinglist.model.Migrations
@@ -13,7 +13,7 @@ import io.benic.shoppinglist.model.ShoppingCartDao
 import javax.inject.Singleton
 
 @Module
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 class AppModule {
     @Singleton
     @Provides
@@ -23,6 +23,7 @@ class AppModule {
             .addMigrations(Migrations.migrationFrom2To3)
             .addMigrations(Migrations.migrationFrom3To4)
             .addMigrations(Migrations.migrationFrom4To5)
+            .addMigrations(Migrations.migrationFrom5To6)
             .build()
     }
 

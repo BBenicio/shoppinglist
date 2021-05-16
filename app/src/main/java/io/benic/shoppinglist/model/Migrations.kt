@@ -28,4 +28,11 @@ object Migrations {
             database.execSQL("alter table carts add column description TEXT not null default ''")
         }
     }
+
+    val migrationFrom5To6 = object : Migration(5, 6) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("alter table carts add column createdAt integer not null default 0")
+        }
+
+    }
 }

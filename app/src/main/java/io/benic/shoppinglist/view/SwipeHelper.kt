@@ -20,7 +20,7 @@ class SwipeHelper(
     private val lifecycleCoroutineScope: LifecycleCoroutineScope,
     private val callback: (remove: Boolean, position: Int) -> Unit
 ) : ItemTouchHelper.SimpleCallback(
-    ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+    0,
     ItemTouchHelper.LEFT
 ) {
 
@@ -30,7 +30,6 @@ class SwipeHelper(
     }
 
     private var itemAdapter: ItemRecycleAdapter? = null
-    private var cartAdapter: ShoppingCartRecycleAdapter? = null
 
     private val deleteBackground: Drawable = ColorDrawable(Color.RED)
 
@@ -38,10 +37,7 @@ class SwipeHelper(
 
     fun setAdapter(adapter: ItemRecycleAdapter) {
         itemAdapter = adapter
-    }
-
-    fun setAdapter(adapter: ShoppingCartRecycleAdapter) {
-        cartAdapter = adapter
+        setDefaultDragDirs(ItemTouchHelper.UP or ItemTouchHelper.DOWN)
     }
 
     override fun onMove(
@@ -55,7 +51,7 @@ class SwipeHelper(
                 return true
             }
         }
-        return cartAdapter != null
+        return false
     }
 
 

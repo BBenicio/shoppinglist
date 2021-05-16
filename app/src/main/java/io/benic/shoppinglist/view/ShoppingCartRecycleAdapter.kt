@@ -27,6 +27,10 @@ class ShoppingCartRecycleAdapter(
         val totalCost: TextView = view.findViewById(R.id.totalCost)
     }
 
+    init {
+        data.sortByDescending { s -> if (s.createdAt > 0) s.createdAt else s.id }
+    }
+
     var selected: Int = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -69,8 +73,8 @@ class ShoppingCartRecycleAdapter(
 
     fun addCart(cart: ShoppingCart) {
         Log.i(TAG, "add cart ${cart.name}")
-        data.add(cart)
-        notifyItemInserted(data.size)
+        data.add(0, cart)
+        notifyItemInserted(0)
     }
 
     fun removeCartAt(position: Int) {
@@ -82,6 +86,7 @@ class ShoppingCartRecycleAdapter(
     fun addData(carts: List<ShoppingCart>) {
         Log.i(TAG, "add ${carts.size} carts")
         data.addAll(carts)
+        data.sortByDescending { s -> if (s.createdAt > 0) s.createdAt else s.id }
         notifyDataSetChanged()
     }
 

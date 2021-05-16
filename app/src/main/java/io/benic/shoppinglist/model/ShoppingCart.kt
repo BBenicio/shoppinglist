@@ -11,7 +11,8 @@ data class ShoppingCart(
     var maxCost: Int = 0,
     @Ignore var items: ArrayList<Item> = ArrayList(),
     var cost: Int = 0,
-    var description: String = ""
+    var description: String = "",
+    var createdAt: Long = System.currentTimeMillis()
 ) {
     constructor(cart: ShoppingCart) : this(
         id = cart.id,
@@ -21,6 +22,7 @@ data class ShoppingCart(
         description = cart.description.substring(0)
     ) {
         items.addAll(cart.items)
+
     }
 
 }
